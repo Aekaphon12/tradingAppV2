@@ -91,6 +91,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background
   },
   content: {
+    paddingHorizontal: 22,
+    paddingTop: 18,
     paddingBottom: 80
   },
   empty: {

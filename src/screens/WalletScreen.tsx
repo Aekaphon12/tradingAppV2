@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background
   },
   content: {
-    padding: 18,
+        paddingHorizontal: 22,
+    paddingTop: 18,
     paddingBottom: 90
   },
   title: {

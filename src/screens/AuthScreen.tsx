@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
-import { Chip } from "../components/Chip";
 import { Input } from "../components/Input";
 import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
@@ -93,17 +92,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     overflow: "hidden",
-    marginBottom: 18
+    marginBottom: 18,
+    width: "100%",
+    maxWidth: 320
   },
   tabButton: {
     flex: 1,
     paddingVertical: 10,
+    paddingHorizontal: 12,
     alignItems: "center",
     justifyContent: "center"
   },
   tabText: {
+    fontSize: 13,
     fontWeight: "700",
-    color: colors.textMuted
+    color: colors.textMuted,
+    textAlign: "center",
+    width: "100%",
+    lineHeight: 16
   },
   tabActive: {
     backgroundColor: colors.accent,

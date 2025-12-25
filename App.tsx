@@ -151,17 +151,8 @@ const styles = StyleSheet.create({
       ? {
           width: 430,
           height: 932,
-          borderRadius: 28,
-          overflow: "hidden",
-          borderLeftWidth: 1,
-          borderRightWidth: 1,
-          borderTopWidth: 1,
-          borderBottomWidth: 1,
-          borderColor: colors.border,
-          shadowColor: "#000000",
-          shadowOpacity: 0.35,
-          shadowRadius: 20,
-          shadowOffset: { width: 0, height: 10 }
+          borderRadius: 0,
+          overflow: "hidden"
         }
       : null)
   },
