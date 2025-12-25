@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { SafeAreaView, StyleSheet, View, Pressable } from "react-native";
+import { Platform, SafeAreaView, StyleSheet, View, Pressable } from "react-native";
 import { AppStateProvider, useAppState } from "./src/state/AppState";
 import { I18nProvider } from "./src/state/I18n";
 import { AuthScreen } from "./src/screens/AuthScreen";
@@ -81,51 +81,55 @@ const AppShell: React.FC = () => {
 
   if (!isAuthed) {
     return (
-      <SafeAreaView style={styles.shell}>
-        <View style={styles.content}>
-          <AuthScreen onAuth={() => setIsAuthed(true)} />
-        </View>
-        {showSplash ? <SplashScreen onDone={() => setShowSplash(false)} /> : null}
-      </SafeAreaView>
+      <View style={styles.webOuter}>
+        <SafeAreaView style={styles.shell}>
+          <View style={styles.content}>
+            <AuthScreen onAuth={() => setIsAuthed(true)} />
+          </View>
+          {showSplash ? <SplashScreen onDone={() => setShowSplash(false)} /> : null}
+        </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView style={styles.shell}>
-      <AppHeader onMenu={() => setDrawerOpen(true)} />
-      <View style={styles.content}>
-        {screen === "home" ? <HomeScreen onNavigate={handleNavigate} /> : null}
-        {screen === "market" ? <MarketScreen /> : null}
-        {screen === "trade" ? <TradeScreen /> : null}
-        {screen === "wallet" ? <WalletScreen /> : null}
-        {screen === "rewards" ? <RewardsScreen /> : null}
-        {screen === "news" ? <NewsScreen /> : null}
-        {screen === "settings" ? <SettingsScreen onLogout={() => setIsAuthed(false)} /> : null}
-        {screen === "more" ? <MoreScreen /> : null}
-        {screen === "kyc" ? <KycScreen onBack={() => handleNavigate("home")} /> : null}
-        {screen === "account" ? <AccountScreen onBack={() => handleNavigate("home")} /> : null}
-        {screen === "notifications" ? <NotificationsScreen onBack={() => handleNavigate("home")} /> : null}
-        {screen === "accountCenter" ? <AccountCenterScreen /> : null}
-        {screen === "verificationCenter" ? <VerificationCenterScreen /> : null}
-        {screen === "securityCenter" ? <SecurityCenterScreen /> : null}
-        {screen === "billingMethods" ? <BillingMethodsScreen /> : null}
-        {screen === "preferences" ? <PreferencesScreen /> : null}
-        {screen === "supportCenter" ? <SupportCenterScreen /> : null}
-      </View>
+    <View style={styles.webOuter}>
+      <SafeAreaView style={styles.shell}>
+        <AppHeader onMenu={() => setDrawerOpen(true)} />
+        <View style={styles.content}>
+          {screen === "home" ? <HomeScreen onNavigate={handleNavigate} /> : null}
+          {screen === "market" ? <MarketScreen /> : null}
+          {screen === "trade" ? <TradeScreen /> : null}
+          {screen === "wallet" ? <WalletScreen /> : null}
+          {screen === "rewards" ? <RewardsScreen /> : null}
+          {screen === "news" ? <NewsScreen /> : null}
+          {screen === "settings" ? <SettingsScreen onLogout={() => setIsAuthed(false)} /> : null}
+          {screen === "more" ? <MoreScreen /> : null}
+          {screen === "kyc" ? <KycScreen onBack={() => handleNavigate("home")} /> : null}
+          {screen === "account" ? <AccountScreen onBack={() => handleNavigate("home")} /> : null}
+          {screen === "notifications" ? <NotificationsScreen onBack={() => handleNavigate("home")} /> : null}
+          {screen === "accountCenter" ? <AccountCenterScreen /> : null}
+          {screen === "verificationCenter" ? <VerificationCenterScreen /> : null}
+          {screen === "securityCenter" ? <SecurityCenterScreen /> : null}
+          {screen === "billingMethods" ? <BillingMethodsScreen /> : null}
+          {screen === "preferences" ? <PreferencesScreen /> : null}
+          {screen === "supportCenter" ? <SupportCenterScreen /> : null}
+        </View>
 
-      <BottomTabs active={activeTab} onChange={handleTabChange} />
+        <BottomTabs active={activeTab} onChange={handleTabChange} />
 
-      <Pressable style={styles.devTrigger} onPress={() => setShowDev(true)} />
-      {showDev ? <DevPanel onClose={() => setShowDev(false)} /> : null}
-      {toast ? <Toast title={toast.title} body={toast.body} /> : null}
-      {showSplash ? <SplashScreen onDone={() => setShowSplash(false)} /> : null}
-      <SideDrawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        onNavigate={handleNavigate}
-        onLogout={() => setIsAuthed(false)}
-      />
-    </SafeAreaView>
+        <Pressable style={styles.devTrigger} onPress={() => setShowDev(true)} />
+        {showDev ? <DevPanel onClose={() => setShowDev(false)} /> : null}
+        {toast ? <Toast title={toast.title} body={toast.body} /> : null}
+        {showSplash ? <SplashScreen onDone={() => setShowSplash(false)} /> : null}
+        <SideDrawer
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          onNavigate={handleNavigate}
+          onLogout={() => setIsAuthed(false)}
+        />
+      </SafeAreaView>
+    </View>
   );
 };
 
@@ -142,10 +146,37 @@ export default function App() {
 const styles = StyleSheet.create({
   shell: {
     flex: 1,
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
+    ...(Platform.OS === "web"
+      ? {
+          width: 430,
+          height: 932,
+          borderRadius: 28,
+          overflow: "hidden",
+          borderLeftWidth: 1,
+          borderRightWidth: 1,
+          borderTopWidth: 1,
+          borderBottomWidth: 1,
+          borderColor: colors.border,
+          shadowColor: "#000000",
+          shadowOpacity: 0.35,
+          shadowRadius: 20,
+          shadowOffset: { width: 0, height: 10 }
+        }
+      : null)
   },
   content: {
     flex: 1
+  },
+  webOuter: {
+    flex: 1,
+    ...(Platform.OS === "web"
+      ? {
+          backgroundColor: "#050C0A",
+          alignItems: "center",
+          justifyContent: "center"
+        }
+      : null)
   },
   devTrigger: {
     position: "absolute",

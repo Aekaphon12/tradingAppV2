@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Chip } from "../components/Chip";
@@ -19,12 +19,18 @@ export const AuthScreen: React.FC<{ onAuth: () => void }> = ({ onAuth }) => {
       <View style={styles.centerWrap}>
         <Image source={logo} style={styles.logoTop} resizeMode="contain" />
         <View style={styles.tabs}>
-          <Text onPress={() => setMode("login")} style={[styles.tab, mode === "login" && styles.tabActive]}>
-            {t("login")}
-          </Text>
-          <Text onPress={() => setMode("register")} style={[styles.tab, mode === "register" && styles.tabActive]}>
-            {t("register")}
-          </Text>
+          <Pressable
+            onPress={() => setMode("login")}
+            style={[styles.tabButton, mode === "login" && styles.tabActive]}
+          >
+            <Text style={[styles.tabText, mode === "login" && styles.tabTextActive]}>{t("login")}</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => setMode("register")}
+            style={[styles.tabButton, mode === "register" && styles.tabActive]}
+          >
+            <Text style={[styles.tabText, mode === "register" && styles.tabTextActive]}>{t("register")}</Text>
+          </Pressable>
         </View>
 
         <Card style={styles.card}>
@@ -89,15 +95,21 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginBottom: 18
   },
-  tab: {
+  tabButton: {
     flex: 1,
-    textAlign: "center",
     paddingVertical: 10,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  tabText: {
     fontWeight: "700",
     color: colors.textMuted
   },
   tabActive: {
     backgroundColor: colors.accent,
+    color: colors.background
+  },
+  tabTextActive: {
     color: colors.background
   },
   card: {
