@@ -1,0 +1,18 @@
+export type ScreenKey =
+  | "home"
+  | "market"
+  | "trade"
+  | "wallet"
+  | "rewards"
+  | "news"
+  | "settings"
+  | "more"
+  | "kyc"
+  | "account"
+  | "notifications"
+  | "accountCenter"
+  | "verificationCenter"
+  | "securityCenter"
+  | "billingMethods"
+  | "preferences"
+  | "supportCenter";
