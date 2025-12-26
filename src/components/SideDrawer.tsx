@@ -71,25 +71,67 @@ export const SideDrawer: React.FC<{
           </View>
 
           <View style={styles.menuSection}>
-            <Pressable style={styles.item} onPress={() => onNavigate("accountCenter")}>
+            <Pressable
+              style={styles.item}
+              onPress={() => {
+                onNavigate("accountCenter");
+                onClose();
+              }}
+            >
               <Text style={styles.itemText}>Account</Text>
             </Pressable>
-            <Pressable style={styles.item} onPress={() => onNavigate("verificationCenter")}>
+            <Pressable
+              style={styles.item}
+              onPress={() => {
+                onNavigate("verificationCenter");
+                onClose();
+              }}
+            >
               <Text style={styles.itemText}>Verification</Text>
             </Pressable>
-            <Pressable style={styles.item} onPress={() => onNavigate("securityCenter")}>
+            <Pressable
+              style={styles.item}
+              onPress={() => {
+                onNavigate("securityCenter");
+                onClose();
+              }}
+            >
               <Text style={styles.itemText}>Security</Text>
             </Pressable>
-            <Pressable style={styles.item} onPress={() => onNavigate("billingMethods")}>
+            <Pressable
+              style={styles.item}
+              onPress={() => {
+                onNavigate("billingMethods");
+                onClose();
+              }}
+            >
               <Text style={styles.itemText}>Billing Methods</Text>
             </Pressable>
-            <Pressable style={styles.item} onPress={() => onNavigate("preferences")}>
+            <Pressable
+              style={styles.item}
+              onPress={() => {
+                onNavigate("preferences");
+                onClose();
+              }}
+            >
               <Text style={styles.itemText}>Preferences</Text>
             </Pressable>
-            <Pressable style={styles.item} onPress={() => onNavigate("supportCenter")}>
+            <Pressable
+              style={styles.item}
+              onPress={() => {
+                onNavigate("supportCenter");
+                onClose();
+              }}
+            >
               <Text style={styles.itemText}>Support</Text>
             </Pressable>
-            <Pressable style={styles.item} onPress={onLogout}>
+            <Pressable
+              style={styles.item}
+              onPress={() => {
+                onLogout();
+                onClose();
+              }}
+            >
               <Text style={[styles.itemText, styles.logout]}>Logout</Text>
             </Pressable>
           </View>

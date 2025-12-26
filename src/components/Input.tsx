@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../theme/colors";
+import { useAppState } from "../state/AppState";
 
 export const Input: React.FC<{
   value: string;
@@ -8,6 +9,7 @@ export const Input: React.FC<{
   placeholder?: string;
   keyboardType?: "default" | "numeric" | "email-address";
 }> = ({ value, onChangeText, placeholder, keyboardType = "default" }) => {
+  const { fontScale } = useAppState();
   return (
     <View style={styles.wrap}>
       <TextInput
@@ -16,7 +18,7 @@ export const Input: React.FC<{
         placeholder={placeholder}
         placeholderTextColor={colors.textMuted}
         keyboardType={keyboardType}
-        style={styles.input}
+        style={[styles.input, { fontSize: 14 * fontScale }]}
       />
     </View>
   );

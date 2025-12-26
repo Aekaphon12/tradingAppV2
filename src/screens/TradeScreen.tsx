@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Chip } from "../components/Chip";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { Input } from "../components/Input";
 import { Section } from "../components/Section";
 import { LabelValue } from "../components/LabelValue";
@@ -17,6 +18,7 @@ export const TradeScreen: React.FC = () => {
   const [volume, setVolume] = useState("0.1");
   const [sl, setSl] = useState("");
   const [tp, setTp] = useState("");
+  const [closeTarget, setCloseTarget] = useState<string | null>(null);
 
   const placeOrder = () => {
     // analytics: track("trade_place_order")
@@ -60,7 +62,8 @@ export const TradeScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.content}>
       <Text style={styles.title}>Light Trading</Text>
       <Text style={styles.subtitle}>Market orders only (basic).</Text>
 
@@ -114,15 +117,30 @@ export const TradeScreen: React.FC = () => {
                   </Text>
                 </View>
                 <View>
-                  <Text style={styles.meta}>P/L {pos.pl}</Text>
-                  <Button label="Close" variant="ghost" onPress={() => closePosition(pos.id)} />
+                <Text style={styles.meta}>P/L {pos.pl}</Text>
+                <Button label="Close" variant="ghost" onPress={() => setCloseTarget(pos.id)} />
                 </View>
               </View>
             ))
           )}
         </Card>
       </Section>
-    </ScrollView>
+      </ScrollView>
+      <ConfirmDialog
+        visible={closeTarget !== null}
+        title="Close Position"
+        message="Confirm closing this position?"
+        confirmLabel="Confirm"
+        cancelLabel="Cancel"
+        onConfirm={() => {
+          if (closeTarget) {
+            closePosition(closeTarget);
+          }
+          setCloseTarget(null);
+        }}
+        onCancel={() => setCloseTarget(null)}
+      />
+    </View>
   );
 };
 

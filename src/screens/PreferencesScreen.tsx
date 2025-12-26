@@ -7,7 +7,7 @@ import { colors } from "../theme/colors";
 import { useAppState } from "../state/AppState";
 
 export const PreferencesScreen: React.FC = () => {
-  const { lang, setLang } = useAppState();
+  const { lang, setLang, fontScale, setFontScale } = useAppState();
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -20,6 +20,24 @@ export const PreferencesScreen: React.FC = () => {
             <Chip label="EN" selected={lang === "en"} onPress={() => setLang("en")} />
             <Chip label="TH" selected={lang === "th"} onPress={() => setLang("th")} />
             <Chip label="CN" selected={lang === "zh"} onPress={() => setLang("zh")} />
+          </View>
+        </Card>
+      </Section>
+
+      <Section title="Font Size">
+        <Card>
+          <View style={styles.row}>
+            <Chip
+              label="A-"
+              selected={false}
+              onPress={() => setFontScale((prev) => Math.max(0.9, Number((prev - 0.1).toFixed(1))))}
+            />
+            <Chip
+              label="A+"
+              selected={false}
+              onPress={() => setFontScale((prev) => Math.min(1.3, Number((prev + 0.1).toFixed(1))))}
+            />
+            <Text style={styles.value}>Scale {fontScale.toFixed(1)}x</Text>
           </View>
         </Card>
       </Section>
@@ -56,7 +74,9 @@ const styles = StyleSheet.create({
     marginBottom: 12
   },
   row: {
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8
   },
   label: {
     fontSize: 12,

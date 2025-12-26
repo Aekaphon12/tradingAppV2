@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Chip } from "../components/Chip";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { Input } from "../components/Input";
 import { Section } from "../components/Section";
 import { Timeline } from "../components/Timeline";
@@ -24,6 +25,7 @@ export const WalletScreen: React.FC = () => {
   const [tab, setTab] = useState<"deposit" | "withdraw">("deposit");
   const [amount, setAmount] = useState("100");
   const [method, setMethod] = useState("Bank Transfer");
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleDeposit = () => {
     // analytics: track("deposit_create")
@@ -74,7 +76,8 @@ export const WalletScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.content}>
       <Text style={styles.title}>Wallet</Text>
       <Text style={styles.subtitle}>Deposit, withdraw, and track status.</Text>
 
@@ -96,7 +99,7 @@ export const WalletScreen: React.FC = () => {
             </View>
             <Text style={styles.status}>Status: {depositStatus.toUpperCase()}</Text>
             {depositStatus === "rejected" ? <Text style={styles.reason}>{depositReason}</Text> : null}
-            <Button label="Confirm Deposit" onPress={handleDeposit} />
+            <Button label="Confirm Deposit" onPress={() => setShowConfirm(true)} />
           </Card>
         </Section>
       ) : (
@@ -132,7 +135,32 @@ export const WalletScreen: React.FC = () => {
           <Button label="Retry" variant="ghost" />
         </Card>
       </Section>
-    </ScrollView>
+      <ConfirmDialog
+        visible={showConfirm}
+        title="Confirm Deposit"
+        message={`Deposit ${amount} via ${method}?`}
+        confirmLabel="Confirm"
+        cancelLabel="Cancel"
+        onConfirm={() => {
+          setShowConfirm(false);
+          handleDeposit();
+        }}
+        onCancel={() => setShowConfirm(false)}
+      />
+      </ScrollView>
+      <ConfirmDialog
+        visible={showConfirm}
+        title="Confirm Deposit"
+        message={`Deposit ${amount} via ${method}?`}
+        confirmLabel="Confirm"
+        cancelLabel="Cancel"
+        onConfirm={() => {
+          setShowConfirm(false);
+          handleDeposit();
+        }}
+        onCancel={() => setShowConfirm(false)}
+      />
+    </View>
   );
 };
 

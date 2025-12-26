@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, ViewStyle } from "react-native";
 import { colors } from "../theme/colors";
+import { useAppState } from "../state/AppState";
 
 export const Button: React.FC<{
   label: string;
@@ -9,6 +10,7 @@ export const Button: React.FC<{
   disabled?: boolean;
   style?: ViewStyle;
 }> = ({ label, onPress, variant = "primary", disabled, style }) => {
+  const { fontScale } = useAppState();
   const variantStyle = variantStyles[variant];
   const textStyle = textStyles[variant];
   return (
@@ -23,7 +25,7 @@ export const Button: React.FC<{
         style
       ]}
     >
-      <Text style={[styles.text, textStyle]}>{label}</Text>
+      <Text style={[styles.text, textStyle, { fontSize: 14 * fontScale }]}>{label}</Text>
     </Pressable>
   );
 };

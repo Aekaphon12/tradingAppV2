@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { colors } from "../theme/colors";
+import { useAppState } from "../state/AppState";
 
 export const ChecklistItem: React.FC<{
   title: string;
@@ -8,12 +9,13 @@ export const ChecklistItem: React.FC<{
   completed?: boolean;
   onPress?: () => void;
 }> = ({ title, subtitle, completed, onPress }) => {
+  const { fontScale } = useAppState();
   return (
     <Pressable onPress={onPress} style={styles.item}>
       <View style={[styles.dot, completed && styles.dotComplete]} />
       <View style={styles.textWrap}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.subtitle}>{subtitle}</Text>
+        <Text style={[styles.title, { fontSize: 14 * fontScale }]}>{title}</Text>
+        <Text style={[styles.subtitle, { fontSize: 12 * fontScale }]}>{subtitle}</Text>
       </View>
       <Text style={[styles.badge, completed ? styles.badgeComplete : styles.badgeTodo]}>
         {completed ? "Done" : "Next"}

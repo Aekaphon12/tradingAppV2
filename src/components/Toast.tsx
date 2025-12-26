@@ -1,12 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../theme/colors";
+import { useAppState } from "../state/AppState";
 
 export const Toast: React.FC<{ title: string; body: string }> = ({ title, body }) => {
+  const { fontScale } = useAppState();
   return (
     <View style={styles.toast}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.body}>{body}</Text>
+      <Text style={[styles.title, { fontSize: 13 * fontScale }]}>{title}</Text>
+      <Text style={[styles.body, { fontSize: 12 * fontScale }]}>{body}</Text>
     </View>
   );
 };

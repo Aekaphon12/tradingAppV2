@@ -1,11 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../theme/colors";
+import { useAppState } from "../state/AppState";
 import type { Transaction } from "../state/AppState";
 
 export const Timeline: React.FC<{ items: Transaction[] }> = ({ items }) => {
+  const { fontScale } = useAppState();
   if (items.length === 0) {
-    return <Text style={styles.empty}>No transactions yet.</Text>;
+    return <Text style={[styles.empty, { fontSize: 12 * fontScale }]}>No transactions yet.</Text>;
   }
 
   return (
@@ -14,15 +16,15 @@ export const Timeline: React.FC<{ items: Transaction[] }> = ({ items }) => {
         <View key={item.id} style={styles.row}>
           <View style={styles.dot} />
           <View style={styles.content}>
-            <Text style={styles.title}>
+            <Text style={[styles.title, { fontSize: 13 * fontScale }]}>
               {item.type === "deposit" ? "Deposit" : "Withdrawal"} · {item.method}
             </Text>
-            <Text style={styles.subtitle}>
+            <Text style={[styles.subtitle, { fontSize: 12 * fontScale }]}>
               {item.time} · {item.status.toUpperCase()}
             </Text>
-            {item.reason ? <Text style={styles.reason}>Reason: {item.reason}</Text> : null}
+            {item.reason ? <Text style={[styles.reason, { fontSize: 12 * fontScale }]}>Reason: {item.reason}</Text> : null}
           </View>
-          <Text style={styles.amount}>{item.amount.toFixed(2)}</Text>
+          <Text style={[styles.amount, { fontSize: 12 * fontScale }]}>{item.amount.toFixed(2)}</Text>
         </View>
       ))}
     </View>

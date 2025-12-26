@@ -6,6 +6,7 @@ export type ScreenKey =
   | "rewards"
   | "news"
   | "settings"
+  | "profile"
   | "more"
   | "kyc"
   | "account"

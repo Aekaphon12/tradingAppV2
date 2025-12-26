@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Card } from "../components/Card";
 import { colors } from "../theme/colors";
 
@@ -8,10 +8,12 @@ export const MoreScreen: React.FC = () => {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.title}>Legacy / More</Text>
       <Text style={styles.subtitle}>Placeholder for existing features not yet mapped.</Text>
-      <Card>
-        <Text style={styles.text}>Legacy modules remain accessible in production builds.</Text>
-        <Text style={styles.text}>Add links to legacy features here when clarified.</Text>
-      </Card>
+      <View style={styles.bottomBlock}>
+        <Card>
+          <Text style={styles.text}>Legacy modules remain accessible in production builds.</Text>
+          <Text style={styles.text}>Add links to legacy features here when clarified.</Text>
+        </Card>
+      </View>
     </ScrollView>
   );
 };
@@ -22,9 +24,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background
   },
   content: {
-        paddingHorizontal: 22,
+    paddingHorizontal: 22,
     paddingTop: 18,
-    paddingBottom: 90
+    paddingBottom: 90,
+    flexGrow: 1
+  },
+  bottomBlock: {
+    marginTop: "auto"
   },
   title: {
     fontSize: 20,

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
 import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
+import { useAppState } from "../state/AppState";
 
 export type TabKey =
   | "home"
@@ -10,14 +11,14 @@ export type TabKey =
   | "wallet"
   | "rewards"
   | "news"
-  | "settings"
-  | "more";
+  | "profile";
 
 export const BottomTabs: React.FC<{
   active: TabKey;
   onChange: (tab: TabKey) => void;
 }> = ({ active, onChange }) => {
   const { t } = useI18n();
+  const { fontScale } = useAppState();
   const labels: Record<TabKey, string> = {
     home: t("home"),
     market: t("market"),
@@ -25,8 +26,7 @@ export const BottomTabs: React.FC<{
     wallet: t("wallet"),
     rewards: t("rewards"),
     news: t("news"),
-    settings: t("settings"),
-    more: t("more")
+    profile: t("profile")
   };
 
   const groups = useMemo(
@@ -35,7 +35,7 @@ export const BottomTabs: React.FC<{
       { key: "trade", label: labels.trade, options: ["market", "trade"] as TabKey[] },
       { key: "wallet", label: labels.wallet, options: ["wallet", "rewards"] as TabKey[] },
       { key: "news", label: labels.news, options: ["news"] as TabKey[] },
-      { key: "more", label: labels.more, options: ["settings"] as TabKey[] }
+      { key: "profile", label: labels.profile, options: [] as TabKey[] }
     ],
     [labels]
   );
@@ -67,7 +67,7 @@ export const BottomTabs: React.FC<{
   const handleGroupPress = (key: string) => {
     const group = groups.find((item) => item.key === key);
     if (!group) return;
-    if (group.options.length <= 1 && key !== "more") {
+    if (group.options.length === 0) {
       onChange(key as TabKey);
       setOpenGroup(null);
       return;
@@ -96,8 +96,12 @@ export const BottomTabs: React.FC<{
           {currentGroup.options.map((option) => (
             <Pressable key={option} style={styles.dropdownItem} onPress={() => handleOptionPress(option)}>
               <View style={styles.dropdownRow}>
-                <Text style={[styles.dropdownIcon, active === option && styles.dropdownIconActive]}>{iconMap[option]}</Text>
-                <Text style={[styles.dropdownText, active === option && styles.dropdownTextActive]}>{labels[option]}</Text>
+                <Text style={[styles.dropdownIcon, active === option && styles.dropdownIconActive, { fontSize: 13 * fontScale }]}>
+                  {iconMap[option]}
+                </Text>
+                <Text style={[styles.dropdownText, active === option && styles.dropdownTextActive, { fontSize: 12 * fontScale }]}>
+                  {labels[option]}
+                </Text>
               </View>
             </Pressable>
           ))}
@@ -123,8 +127,8 @@ export const BottomTabs: React.FC<{
               }}
             >
               <View style={[styles.tabPill, isActive && styles.tabPillActive]}>
-                <Text style={[styles.icon, isActive && styles.iconActive]}>{icon}</Text>
-                <Text style={[styles.label, isActive && styles.labelActive]}>{group.label}</Text>
+                <Text style={[styles.icon, isActive && styles.iconActive, { fontSize: 14 * fontScale }]}>{icon}</Text>
+                <Text style={[styles.label, isActive && styles.labelActive, { fontSize: 10 * fontScale }]}>{group.label}</Text>
               </View>
             </Pressable>
           );
@@ -174,10 +178,10 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 14,
     marginBottom: 2,
-    color: "#7CF9FF"
+    color: "#76F5C7"
   },
   iconActive: {
-    color: "#2BFFB8"
+    color: "#4BFFC2"
   },
   label: {
     fontSize: 10,
@@ -220,10 +224,10 @@ const styles = StyleSheet.create({
   },
   dropdownIcon: {
     fontSize: 13,
-    color: "#7CF9FF"
+    color: "#76F5C7"
   },
   dropdownIconActive: {
-    color: "#2BFFB8"
+    color: "#4BFFC2"
   },
   dropdownText: {
     color: colors.textSecondary,
@@ -236,12 +240,11 @@ const styles = StyleSheet.create({
 });
 
 const iconMap: Record<TabKey, string> = {
-  home: "⌂",
-  market: "≋",
-  trade: "↔",
-  wallet: "◈",
-  rewards: "★",
-  news: "▣",
-  settings: "⚙",
-  more: "⋯"
+  home: "🏠",
+  market: "📊",
+  trade: "📈",
+  wallet: "💳",
+  rewards: "🎁",
+  news: "📰",
+  profile: "👤"
 };

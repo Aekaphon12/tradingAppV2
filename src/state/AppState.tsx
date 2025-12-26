@@ -80,6 +80,8 @@ type AppState = {
   addNotification: (notification: Notification) => void;
   missionsProgress: Record<string, number>;
   setMissionsProgress: React.Dispatch<React.SetStateAction<Record<string, number>>>;
+  fontScale: number;
+  setFontScale: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const AppStateContext = createContext<AppState | undefined>(undefined);
@@ -109,6 +111,7 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [missionsProgress, setMissionsProgress] = useState<Record<string, number>>(
     baseMissions.reduce((acc, m) => ({ ...acc, [m.id]: m.progress }), {})
   );
+  const [fontScale, setFontScale] = useState(1);
 
   const addNotification = (notification: Notification) => {
     setNotifications((prev) => [{ ...notification, time: nowTime() }, ...prev]);
@@ -155,7 +158,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       notifications,
       addNotification,
       missionsProgress,
-      setMissionsProgress
+      setMissionsProgress,
+      fontScale,
+      setFontScale
     }),
     [
       isAuthed,
@@ -177,7 +182,8 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       positions,
       alerts,
       notifications,
-      missionsProgress
+      missionsProgress,
+      fontScale
     ]
   );
 

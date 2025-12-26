@@ -1,16 +1,18 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../theme/colors";
+import { useAppState } from "../state/AppState";
 
 export const Section: React.FC<{ title: string; children: React.ReactNode; right?: React.ReactNode }> = ({
   title,
   children,
   right
 }) => {
+  const { fontScale } = useAppState();
   return (
     <View style={styles.section}>
       <View style={styles.header}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, { fontSize: 16 * fontScale }]}>{title}</Text>
         {right}
       </View>
       <View>{children}</View>

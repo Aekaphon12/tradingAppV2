@@ -9,11 +9,10 @@ import { TradeScreen } from "./src/screens/TradeScreen";
 import { WalletScreen } from "./src/screens/WalletScreen";
 import { RewardsScreen } from "./src/screens/RewardsScreen";
 import { NewsScreen } from "./src/screens/NewsScreen";
-import { SettingsScreen } from "./src/screens/SettingsScreen";
+import { ProfileScreen } from "./src/screens/ProfileScreen";
 import { KycScreen } from "./src/screens/KycScreen";
 import { AccountScreen } from "./src/screens/AccountScreen";
 import { NotificationsScreen } from "./src/screens/NotificationsScreen";
-import { MoreScreen } from "./src/screens/MoreScreen";
 import { AccountCenterScreen } from "./src/screens/AccountCenterScreen";
 import { VerificationCenterScreen } from "./src/screens/VerificationCenterScreen";
 import { SecurityCenterScreen } from "./src/screens/SecurityCenterScreen";
@@ -46,8 +45,9 @@ const AppShell: React.FC = () => {
       wallet: "wallet",
       rewards: "rewards",
       news: "news",
-      settings: "settings",
-      more: "more",
+      profile: "profile",
+      more: "profile",
+      settings: "profile",
       kyc: "home",
       account: "home",
       notifications: "home",
@@ -103,8 +103,12 @@ const AppShell: React.FC = () => {
           {screen === "wallet" ? <WalletScreen /> : null}
           {screen === "rewards" ? <RewardsScreen /> : null}
           {screen === "news" ? <NewsScreen /> : null}
-          {screen === "settings" ? <SettingsScreen onLogout={() => setIsAuthed(false)} /> : null}
-          {screen === "more" ? <MoreScreen /> : null}
+          {screen === "settings" ? (
+            <ProfileScreen onLogout={() => setIsAuthed(false)} onNavigate={handleNavigate} />
+          ) : null}
+          {screen === "profile" ? (
+            <ProfileScreen onLogout={() => setIsAuthed(false)} onNavigate={handleNavigate} />
+          ) : null}
           {screen === "kyc" ? <KycScreen onBack={() => handleNavigate("home")} /> : null}
           {screen === "account" ? <AccountScreen onBack={() => handleNavigate("home")} /> : null}
           {screen === "notifications" ? <NotificationsScreen onBack={() => handleNavigate("home")} /> : null}
