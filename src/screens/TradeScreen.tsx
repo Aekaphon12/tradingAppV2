@@ -5,6 +5,7 @@ import { Card } from "../components/Card";
 import { Chip } from "../components/Chip";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { Input } from "../components/Input";
+import { ChartMock } from "../components/ChartMock";
 import { Section } from "../components/Section";
 import { LabelValue } from "../components/LabelValue";
 import { useAppState } from "../state/AppState";
@@ -21,6 +22,7 @@ export const TradeScreen: React.FC = () => {
   const [sl, setSl] = useState("");
   const [tp, setTp] = useState("");
   const [closeTarget, setCloseTarget] = useState<string | null>(null);
+  const [timeframe, setTimeframe] = useState("H1");
 
   const placeOrder = () => {
     // analytics: track("trade_place_order")
@@ -71,6 +73,10 @@ export const TradeScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.content}>
       <Text style={styles.title}>{t("lightTrading")}</Text>
       <Text style={styles.subtitle}>{t("lightTradingSubtitle")}</Text>
+
+      <Section title={t("chart")}>
+        <ChartMock symbol={symbol} timeframe={timeframe} onTimeframeChange={setTimeframe} />
+      </Section>
 
       <Section title={t("orderTicket")}>
         <Card>

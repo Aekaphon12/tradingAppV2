@@ -27,6 +27,9 @@ import { colors } from "./src/theme/colors";
 import { SplashScreen } from "./src/components/SplashScreen";
 import { AppHeader } from "./src/components/AppHeader";
 import { SideDrawer } from "./src/components/SideDrawer";
+import { SearchScreen } from "./src/screens/SearchScreen";
+import { NotificationDetailScreen } from "./src/screens/NotificationDetailScreen";
+import type { NotificationItem } from "./src/screens/NotificationsScreen";
 
 const AppShell: React.FC = () => {
   const { isAuthed, setIsAuthed, notifications } = useAppState();
@@ -36,6 +39,7 @@ const AppShell: React.FC = () => {
   const [toast, setToast] = useState<{ title: string; body: string } | null>(null);
   const [showSplash, setShowSplash] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState<NotificationItem | null>(null);
 
   const tabForScreen = useMemo<Record<ScreenKey, TabKey>>(
     () => ({
@@ -51,6 +55,8 @@ const AppShell: React.FC = () => {
       kyc: "home",
       account: "home",
       notifications: "home",
+      notificationDetail: "home",
+      search: "home",
       accountCenter: "more",
       verificationCenter: "more",
       securityCenter: "more",
@@ -98,6 +104,7 @@ const AppShell: React.FC = () => {
         <AppHeader
           onMenu={() => setDrawerOpen(true)}
           onNotifications={() => handleNavigate("notifications")}
+          onSearch={() => handleNavigate("search")}
         />
         <View style={styles.content}>
           {screen === "home" ? <HomeScreen onNavigate={handleNavigate} /> : null}
@@ -114,7 +121,21 @@ const AppShell: React.FC = () => {
           ) : null}
           {screen === "kyc" ? <KycScreen onBack={() => handleNavigate("home")} /> : null}
           {screen === "account" ? <AccountScreen onBack={() => handleNavigate("home")} /> : null}
-          {screen === "notifications" ? <NotificationsScreen onBack={() => handleNavigate("home")} /> : null}
+          {screen === "notifications" ? (
+            <NotificationsScreen
+              onBack={() => handleNavigate("home")}
+              onOpenDetail={(item) => {
+                setSelectedNotification(item);
+                setScreen("notificationDetail");
+              }}
+            />
+          ) : null}
+          {screen === "notificationDetail" ? (
+            <NotificationDetailScreen onBack={() => handleNavigate("notifications")} item={selectedNotification} />
+          ) : null}
+          {screen === "search" ? (
+            <SearchScreen onBack={() => handleNavigate("home")} onNavigate={handleNavigate} />
+          ) : null}
           {screen === "accountCenter" ? <AccountCenterScreen /> : null}
           {screen === "verificationCenter" ? <VerificationCenterScreen /> : null}
           {screen === "securityCenter" ? <SecurityCenterScreen /> : null}

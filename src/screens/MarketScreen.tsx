@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Card } from "../components/Card";
 import { Chip } from "../components/Chip";
 import { Button } from "../components/Button";
@@ -7,6 +7,7 @@ import { Section } from "../components/Section";
 import { marketSymbols } from "../data/mock";
 import { useAppState } from "../state/AppState";
 import { useI18n } from "../state/I18n";
+import { ChartMock } from "../components/ChartMock";
 import { colors } from "../theme/colors";
 
 const categories = ["All", "Forex", "Metals", "Indices", "CFDs"] as const;
@@ -16,6 +17,8 @@ export const MarketScreen: React.FC = () => {
   const { t } = useI18n();
   const [selected, setSelected] = useState<(typeof categories)[number]>("All");
   const [prices, setPrices] = useState(marketSymbols);
+  const [timeframe, setTimeframe] = useState("H1");
+  const [chartSymbol, setChartSymbol] = useState("XAUUSD");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -84,14 +87,19 @@ export const MarketScreen: React.FC = () => {
         ))}
       </View>
 
+      <Section title={t("symbolChart")}>
+        <ChartMock symbol={chartSymbol} timeframe={timeframe} onTimeframeChange={setTimeframe} />
+      </Section>
+
       <Section title={t("priceBoard")}>
         <Card>
           {filtered.map((item) => (
             <View key={item.symbol} style={styles.row}>
-              <View>
+              <Pressable style={styles.symbolBlock} onPress={() => setChartSymbol(item.symbol)}>
                 <Text style={styles.symbol}>{item.symbol}</Text>
                 <Text style={styles.category}>{item.category}</Text>
-              </View>
+                {chartSymbol === item.symbol ? <Text style={styles.activeTag}>{t("chart")}</Text> : null}
+              </Pressable>
               <View>
                 <Text style={styles.price}>{item.price}</Text>
                 <Text style={[styles.change, item.change >= 0 ? styles.positive : styles.negative]}>
@@ -189,6 +197,13 @@ const styles = StyleSheet.create({
   actions: {
     flexDirection: "row",
     gap: 6
+  },
+  symbolBlock: {
+    gap: 2
+  },
+  activeTag: {
+    fontSize: 10,
+    color: colors.accent
   },
   note: {
     fontSize: 11,

@@ -7,10 +7,11 @@ import logo from "../assets/logo.png";
 
 export const HEADER_HEIGHT = 72;
 
-export const AppHeader: React.FC<{ onMenu: () => void; onNotifications: () => void }> = ({
-  onMenu,
-  onNotifications
-}) => {
+export const AppHeader: React.FC<{
+  onMenu: () => void;
+  onNotifications: () => void;
+  onSearch: () => void;
+}> = ({ onMenu, onNotifications, onSearch }) => {
   const { notifications } = useAppState();
   const { t } = useI18n();
   const badgeCount = notifications.length;
@@ -18,14 +19,15 @@ export const AppHeader: React.FC<{ onMenu: () => void; onNotifications: () => vo
   return (
     <View style={styles.wrap}>
       <Image source={logo} style={styles.logo} resizeMode="contain" />
-      <View style={styles.searchWrap}>
+      <Pressable style={styles.searchWrap} onPress={onSearch}>
         <Text style={styles.searchIcon}>🔍</Text>
         <TextInput
           placeholder={t("searchPlaceholder")}
           placeholderTextColor={colors.textMuted}
           style={styles.searchInput}
+          onFocus={onSearch}
         />
-      </View>
+      </Pressable>
       <View style={styles.actions}>
         <Pressable onPress={onNotifications} style={styles.iconButton}>
           <Text style={styles.iconText}>🔔</Text>

@@ -11,6 +11,8 @@ export type ScreenKey =
   | "kyc"
   | "account"
   | "notifications"
+  | "notificationDetail"
+  | "search"
   | "accountCenter"
   | "verificationCenter"
   | "securityCenter"
