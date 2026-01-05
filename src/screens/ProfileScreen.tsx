@@ -6,6 +6,7 @@ import { Chip } from "../components/Chip";
 import { Section } from "../components/Section";
 import { faqItems } from "../data/mock";
 import { useAppState } from "../state/AppState";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 import type { ScreenKey } from "../state/Navigation";
 
@@ -13,18 +14,9 @@ export const ProfileScreen: React.FC<{
   onLogout: () => void;
   onNavigate: (screen: ScreenKey) => void;
 }> = ({ onLogout, onNavigate }) => {
-  const {
-    lang,
-    setLang,
-    balance,
-    equity,
-    kycStatus,
-    accountType,
-    leverage,
-    notifications,
-    fontScale,
-    setFontScale
-  } = useAppState();
+  const { t } = useI18n();
+  const { lang, setLang, balance, equity, kycStatus, accountType, leverage, notifications, fontScale, setFontScale } =
+    useAppState();
   const [ticketCreated, setTicketCreated] = useState(false);
 
   const kycLabel = kycStatus.toUpperCase();
@@ -33,15 +25,15 @@ export const ProfileScreen: React.FC<{
 
   const stats = useMemo(
     () => [
-      { label: "Balance", value: `$${balance.toFixed(2)}` },
-      { label: "Equity", value: `$${equity.toFixed(2)}` },
-      { label: "Points", value: "1,250" },
-      { label: "Tier", value: "Silver" },
-      { label: "Streak", value: "4 🔥" },
-      { label: "Account Type", value: accountType },
-      { label: "Leverage", value: leverage }
+      { label: t("balance"), value: `$${balance.toFixed(2)}` },
+      { label: t("equity"), value: `$${equity.toFixed(2)}` },
+      { label: t("points"), value: "1,250" },
+      { label: t("tierLabel"), value: "Silver" },
+      { label: t("streak"), value: "4 🔥" },
+      { label: t("accountTypeLabel"), value: accountType },
+      { label: t("leverage"), value: leverage }
     ],
-    [accountType, balance, equity, leverage]
+    [accountType, balance, equity, leverage, t]
   );
 
   const fontPresets = [
@@ -50,18 +42,31 @@ export const ProfileScreen: React.FC<{
     { label: "A+", value: 1.1 }
   ];
 
+  const languageOptions = [
+    { code: "en", label: "🇬🇧 English" },
+    { code: "id", label: "🇮🇩 Indonesia" },
+    { code: "ja", label: "🇯🇵 日本語" },
+    { code: "ko", label: "🇰🇷 한국어" },
+    { code: "ms", label: "🇲🇾 Melayu" },
+    { code: "th", label: "🇹🇭 ไทย" },
+    { code: "ru", label: "🇷🇺 Русский" },
+    { code: "vi", label: "🇻🇳 Tiếng Việt" },
+    { code: "zh", label: "🇨🇳 简体中文" },
+    { code: "zhHant", label: "🇹🇼 繁體中文" }
+  ] as const;
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Profile</Text>
-      <Text style={styles.subtitle}>Your account, preferences, and support in one place.</Text>
+      <Text style={styles.title}>{t("profileTitle")}</Text>
+      <Text style={styles.subtitle}>{t("profileSubtitle")}</Text>
 
-      <Section title="Center">
+      <Section title={t("centerTitle")}>
         <Card>
           <View style={styles.profileTop}>
             <View style={styles.profileLeft}>
-              <Text style={styles.fisgId}>FISG ID</Text>
+              <Text style={styles.fisgId}>{t("fisgId")}</Text>
               <Text style={styles.name}>John Doe</Text>
-              <Text style={styles.meta}>Premium Tier · KYC verified</Text>
+              <Text style={styles.meta}>{t("premiumTierKyc")}</Text>
             </View>
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>JD</Text>
@@ -69,11 +74,13 @@ export const ProfileScreen: React.FC<{
           </View>
 
           <View style={styles.notifyPill}>
-            <Text style={styles.notifyText}>🔔 {notifications.length || 3} notifications</Text>
+            <Text style={styles.notifyText}>
+              🔔 {t("notificationsCount").replace("{count}", String(notifications.length || 3))}
+            </Text>
           </View>
 
           <View style={styles.statusRow}>
-            <Text style={styles.statusLabel}>KYC Status</Text>
+            <Text style={styles.statusLabel}>{t("kycStatusLabel")}</Text>
             <Text style={[styles.statusValue, { color: kycTone }]}>{kycLabel}</Text>
           </View>
 
@@ -88,16 +95,16 @@ export const ProfileScreen: React.FC<{
         </Card>
       </Section>
 
-      <Section title="Account & Services">
+      <Section title={t("accountServices")}>
         <Card>
           <View style={styles.menuCard}>
             {[
-              { label: "Account", screen: "accountCenter" },
-              { label: "Verification", screen: "verificationCenter" },
-              { label: "Security", screen: "securityCenter" },
-              { label: "Billing Methods", screen: "billingMethods" },
-              { label: "Preferences", screen: "preferences" },
-              { label: "Support", screen: "supportCenter" }
+              { label: t("account"), screen: "accountCenter" },
+              { label: t("verificationTitle"), screen: "verificationCenter" },
+              { label: t("securityTitle"), screen: "securityCenter" },
+              { label: t("billingTitle"), screen: "billingMethods" },
+              { label: t("preferencesTitle"), screen: "preferences" },
+              { label: t("support"), screen: "supportCenter" }
             ].map((item) => (
               <Pressable key={item.label} style={styles.menuItem} onPress={() => onNavigate(item.screen as ScreenKey)}>
                 <Text style={styles.menuText}>{item.label}</Text>
@@ -107,16 +114,21 @@ export const ProfileScreen: React.FC<{
         </Card>
       </Section>
 
-      <Section title="Settings">
+      <Section title={t("settingsTitle")}>
         <Card>
-          <Text style={styles.label}>Language</Text>
+          <Text style={styles.label}>{t("language")}</Text>
           <View style={styles.row}>
-            <Chip label="EN" selected={lang === "en"} onPress={() => setLang("en")} />
-            <Chip label="TH" selected={lang === "th"} onPress={() => setLang("th")} />
-            <Chip label="CN" selected={lang === "zh"} onPress={() => setLang("zh")} />
+            {languageOptions.map((option) => (
+              <Chip
+                key={option.code}
+                label={option.label}
+                selected={lang === option.code}
+                onPress={() => setLang(option.code)}
+              />
+            ))}
           </View>
 
-          <Text style={styles.label}>Font Size</Text>
+          <Text style={styles.label}>{t("fontSize")}</Text>
           <View style={styles.row}>
             {fontPresets.map((preset) => (
               <Chip
@@ -128,23 +140,23 @@ export const ProfileScreen: React.FC<{
             ))}
           </View>
 
-          <Text style={styles.label}>Currency</Text>
+          <Text style={styles.label}>{t("currency")}</Text>
           <Text style={styles.value}>USD (mock)</Text>
-          <Text style={styles.label}>Timezone</Text>
+          <Text style={styles.label}>{t("timezone")}</Text>
           <Text style={styles.value}>Asia/Bangkok (mock)</Text>
         </Card>
       </Section>
 
-      <Section title="Support">
+      <Section title={t("supportTitle")}>
         <Card>
-          <Text style={styles.value}>Create a support ticket or open chat.</Text>
-          <Button label="Create Ticket" onPress={() => setTicketCreated(true)} />
-          {ticketCreated ? <Text style={styles.success}>Ticket created. We will reach out soon.</Text> : null}
-          <Button label="Open Chat" variant="ghost" />
+          <Text style={styles.value}>{t("supportCenterSubtitle")}</Text>
+          <Button label={t("createTicket")} onPress={() => setTicketCreated(true)} />
+          {ticketCreated ? <Text style={styles.success}>{t("ticketCreated")}</Text> : null}
+          <Button label={t("openChat")} variant="ghost" />
         </Card>
       </Section>
 
-      <Section title="FAQ / Help Center">
+      <Section title={t("faqTitle")}>
         <Card>
           {faqItems.map((item) => (
             <View key={item.id} style={styles.faqRow}>
@@ -155,21 +167,21 @@ export const ProfileScreen: React.FC<{
         </Card>
       </Section>
 
-      <Section title="Terms & Privacy">
+      <Section title={t("termsTitle")}>
         <Card>
-          <Text style={styles.value}>Review terms, privacy, and risk disclosures.</Text>
-          <Button label="View Terms" variant="ghost" />
+          <Text style={styles.value}>{t("termsMessage")}</Text>
+          <Button label={t("viewTerms")} variant="ghost" />
         </Card>
       </Section>
 
-      <Section title="Legacy / More">
+      <Section title={t("legacyTitle")}>
         <Card>
-          <Text style={styles.value}>Legacy modules remain accessible in production builds.</Text>
-          <Text style={styles.value}>Add links to legacy features here when clarified.</Text>
+          <Text style={styles.value}>{t("legacyNote1")}</Text>
+          <Text style={styles.value}>{t("legacyNote2")}</Text>
         </Card>
       </Section>
 
-      <Button label="Logout" variant="danger" onPress={onLogout} />
+      <Button label={t("logout")} variant="danger" onPress={onLogout} />
     </ScrollView>
   );
 };
@@ -292,7 +304,9 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    marginBottom: 12
+    marginBottom: 12,
+    flexWrap: "wrap",
+    gap: 8
   },
   menuCard: {
     borderRadius: 14,

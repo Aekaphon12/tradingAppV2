@@ -4,26 +4,29 @@ import { Card } from "../components/Card";
 import { Section } from "../components/Section";
 import { Button } from "../components/Button";
 import { LabelValue } from "../components/LabelValue";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const BillingMethodsScreen: React.FC = () => {
+  const { t } = useI18n();
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Billing Methods</Text>
-      <Text style={styles.subtitle}>Manage deposit and withdrawal methods.</Text>
+      <Text style={styles.title}>{t("billingTitle")}</Text>
+      <Text style={styles.subtitle}>{t("billingSubtitle")}</Text>
 
-      <Section title="Saved Methods">
+      <Section title={t("savedMethods")}>
         <Card>
-          <LabelValue label="Bank Transfer" value="Active" />
-          <LabelValue label="Credit Card" value="Not linked" />
-          <Button label="Add Method" />
+          <LabelValue label={t("bankTransfer")} value={t("active")} />
+          <LabelValue label={t("creditCard")} value={t("notLinked")} />
+          <Button label={t("addMethod")} />
         </Card>
       </Section>
 
-      <Section title="Withdrawal Destinations">
+      <Section title={t("withdrawalDestinations")}>
         <Card>
-          <LabelValue label="Primary Account" value="USD - 4821" />
-          <Button label="Add Destination" variant="ghost" />
+          <LabelValue label={t("primaryAccount")} value="USD - 4821" />
+          <Button label={t("addDestination")} variant="ghost" />
         </Card>
       </Section>
     </ScrollView>

@@ -5,46 +5,52 @@ import { Section } from "../components/Section";
 import { Button } from "../components/Button";
 import { missions, rewardsCatalog } from "../data/mock";
 import { useAppState } from "../state/AppState";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const RewardsScreen: React.FC = () => {
   const { missionsProgress } = useAppState();
+  const { t } = useI18n();
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Rewards</Text>
-      <Text style={styles.subtitle}>Missions, points, and redemption.</Text>
+      <Text style={styles.title}>{t("rewards")}</Text>
+      <Text style={styles.subtitle}>{t("rewardsSubtitle")}</Text>
 
-      <Section title="Points Wallet">
+      <Section title={t("pointsWallet")}>
         <Card>
-          <Text style={styles.points}>1,240 pts</Text>
-          <Text style={styles.note}>Earn points by completing missions.</Text>
+          <Text style={styles.points}>1,240 {t("points")}</Text>
+          <Text style={styles.note}>{t("pointsEarnNote")}</Text>
         </Card>
       </Section>
 
-      <Section title="Missions">
+      <Section title={t("missions")}>
         <Card>
           {missions.map((mission) => (
             <View key={mission.id} style={styles.row}>
               <View>
                 <Text style={styles.mission}>{mission.title}</Text>
-                <Text style={styles.progress}>{missionsProgress[mission.id] || 0}% complete</Text>
+                <Text style={styles.progress}>
+                  {t("missionProgress").replace("{progress}", String(missionsProgress[mission.id] || 0))}
+                </Text>
               </View>
-              <Button label="View" variant="ghost" />
+              <Button label={t("view")} variant="ghost" />
             </View>
           ))}
         </Card>
       </Section>
 
-      <Section title="Redeem Catalog">
+      <Section title={t("redeemCatalog")}>
         <Card>
           {rewardsCatalog.map((reward) => (
             <View key={reward.id} style={styles.row}>
               <View>
                 <Text style={styles.mission}>{reward.title}</Text>
-                <Text style={styles.progress}>{reward.cost} pts</Text>
+                <Text style={styles.progress}>
+                  {reward.cost} {t("points")}
+                </Text>
               </View>
-              <Button label="Redeem" />
+              <Button label={t("redeem")} />
             </View>
           ))}
         </Card>

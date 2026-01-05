@@ -23,50 +23,50 @@ export const HomeScreen: React.FC<{ onNavigate: (screen: ScreenKey) => void }> =
         <Card>
           <ChecklistItem
             title={t("kyc")}
-            subtitle={`Status: ${kycStatus}`}
+            subtitle={`${t("statusLabel")}: ${t(kycStatus)}`}
             completed={isKycDone}
             onPress={() => onNavigate("kyc")}
           />
           <ChecklistItem
             title={t("openAccount")}
-            subtitle={`Account: ${accountStatus}`}
+            subtitle={`${t("accountLabel")}: ${t(accountStatus)}`}
             completed={isAccountOpen}
             onPress={() => onNavigate("account")}
           />
-          <ChecklistItem title={t("deposit")} subtitle="Fund your wallet" onPress={() => onNavigate("wallet")} />
-          <ChecklistItem title={t("tradeNow")} subtitle="Start with market order" onPress={() => onNavigate("trade")} />
+          <ChecklistItem title={t("deposit")} subtitle={t("fundWallet")} onPress={() => onNavigate("wallet")} />
+          <ChecklistItem title={t("tradeNow")} subtitle={t("startMarketOrder")} onPress={() => onNavigate("trade")} />
         </Card>
       </Section>
 
-      <Section title="Account Snapshot">
+      <Section title={t("accountSnapshot")}>
         <Card>
-          <LabelValue label="Balance" value={`$${balance.toFixed(2)}`} />
-          <LabelValue label="Equity" value={`$${equity.toFixed(2)}`} />
-          <LabelValue label="KYC" value={kycStatus.toUpperCase()} tone={isKycDone ? "positive" : "negative"} />
-          <Button label="Open Trading Account" onPress={() => onNavigate("account")} />
+          <LabelValue label={t("balance")} value={`$${balance.toFixed(2)}`} />
+          <LabelValue label={t("equity")} value={`$${equity.toFixed(2)}`} />
+          <LabelValue label={t("kyc")} value={t(kycStatus).toUpperCase()} tone={isKycDone ? "positive" : "negative"} />
+          <Button label={t("openTradingAccount")} onPress={() => onNavigate("account")} />
         </Card>
       </Section>
 
-      <Section title="Quick Actions">
+      <Section title={t("quickActions")}>
         <Card>
-          <Button label="Set Price Alert" onPress={() => onNavigate("market")} />
+          <Button label={t("setPriceAlert")} onPress={() => onNavigate("market")} />
           <View style={styles.spacer} />
-          <Button label="Read Market News" variant="ghost" onPress={() => onNavigate("news")} />
+          <Button label={t("readMarketNews")} variant="ghost" onPress={() => onNavigate("news")} />
           <View style={styles.spacer} />
-          <Button label="View Missions" variant="ghost" onPress={() => onNavigate("rewards")} />
+          <Button label={t("viewMissions")} variant="ghost" onPress={() => onNavigate("rewards")} />
         </Card>
       </Section>
 
-      <Section title="Guided Tour (Later)">
+      <Section title={t("guidedTourLater")}>
         <Card>
-          <Text style={styles.empty}>Placeholder for future guided tour onboarding.</Text>
+          <Text style={styles.empty}>{t("guidedTourPlaceholder")}</Text>
         </Card>
       </Section>
 
       <Section title={t("notifications")}>
         <Card>
           {notifications.length === 0 ? (
-            <Text style={styles.empty}>No alerts yet. Set a price alert in Market.</Text>
+            <Text style={styles.empty}>{t("noAlertsYet")}</Text>
           ) : (
             notifications.slice(0, 3).map((note) => (
               <View key={note.id} style={styles.noteRow}>
@@ -78,7 +78,7 @@ export const HomeScreen: React.FC<{ onNavigate: (screen: ScreenKey) => void }> =
               </View>
             ))
           )}
-          <Button label="View All" variant="ghost" onPress={() => onNavigate("notifications")} />
+          <Button label={t("viewAll")} variant="ghost" onPress={() => onNavigate("notifications")} />
         </Card>
       </Section>
     </ScrollView>

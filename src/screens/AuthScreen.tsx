@@ -36,12 +36,17 @@ export const AuthScreen: React.FC<{ onAuth: () => void }> = ({ onAuth }) => {
           <Text style={styles.sectionTitle}>{mode === "login" ? t("login") : mode === "register" ? t("register") : t("forgotPassword")}</Text>
           <View style={styles.field}>
             <Text style={styles.label}>{t("email")}</Text>
-            <Input value={email} onChangeText={setEmail} placeholder="you@email.com" keyboardType="email-address" />
+            <Input
+              value={email}
+              onChangeText={setEmail}
+              placeholder={t("emailPlaceholder")}
+              keyboardType="email-address"
+            />
           </View>
           {mode !== "forgot" ? (
             <View style={styles.field}>
               <Text style={styles.label}>{t("password")}</Text>
-              <Input value={password} onChangeText={setPassword} placeholder="••••••" />
+              <Input value={password} onChangeText={setPassword} placeholder={t("passwordPlaceholder")} />
             </View>
           ) : null}
           <Button
@@ -51,13 +56,13 @@ export const AuthScreen: React.FC<{ onAuth: () => void }> = ({ onAuth }) => {
           {mode !== "forgot" ? (
             <Button label={t("forgotPassword")} variant="ghost" onPress={() => setMode("forgot")} />
           ) : (
-            <Button label="Back to login" variant="ghost" onPress={() => setMode("login")} />
+            <Button label={t("backToLogin")} variant="ghost" onPress={() => setMode("login")} />
           )}
         </Card>
 
         <Card style={styles.infoCard}>
-          <Text style={styles.infoTitle}>Onboarding Checklist</Text>
-          <Text style={styles.infoBody}>Register → KYC → Open Account → Deposit → Trade</Text>
+          <Text style={styles.infoTitle}>{t("onboardingChecklistTitle")}</Text>
+          <Text style={styles.infoBody}>{t("onboardingChecklistFlow")}</Text>
         </Card>
       </View>
     </ScrollView>

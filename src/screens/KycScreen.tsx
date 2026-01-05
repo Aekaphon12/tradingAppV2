@@ -4,10 +4,12 @@ import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Section } from "../components/Section";
 import { useAppState } from "../state/AppState";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const KycScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const { kycStatus, kycRejectReason, setKycStatus, setMissionsProgress } = useAppState();
+  const { t } = useI18n();
 
   const handleSubmit = () => {
     // analytics: track("kyc_submit")
@@ -17,34 +19,36 @@ export const KycScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>KYC Verification</Text>
-      <Text style={styles.subtitle}>Upload ID and proof of address.</Text>
+      <Text style={styles.title}>{t("kyc")}</Text>
+      <Text style={styles.subtitle}>{t("kycSubtitle")}</Text>
       <Card>
-        <Text style={styles.statusLabel}>Status: {kycStatus.toUpperCase()}</Text>
-        {kycStatus === "rejected" ? <Text style={styles.reason}>Reason: {kycRejectReason}</Text> : null}
+        <Text style={styles.statusLabel}>
+          {t("statusLabel")}: {t(kycStatus).toUpperCase()}
+        </Text>
+        {kycStatus === "rejected" ? <Text style={styles.reason}>{t("reason")}: {kycRejectReason}</Text> : null}
       </Card>
 
-      <Section title="Upload Documents">
+      <Section title={t("uploadDocuments")}>
         <Card>
           <View style={styles.uploadRow}>
-            <Text style={styles.uploadLabel}>ID Document</Text>
-            <Button label="Upload" variant="ghost" />
+            <Text style={styles.uploadLabel}>{t("idDocument")}</Text>
+            <Button label={t("upload")} variant="ghost" />
           </View>
           <View style={styles.uploadRow}>
-            <Text style={styles.uploadLabel}>Proof of Address</Text>
-            <Button label="Upload" variant="ghost" />
+            <Text style={styles.uploadLabel}>{t("proofOfAddress")}</Text>
+            <Button label={t("upload")} variant="ghost" />
           </View>
-          <Button label="Submit for Review" onPress={handleSubmit} />
+          <Button label={t("submitForReview")} onPress={handleSubmit} />
         </Card>
       </Section>
 
-      <Section title="Review Tracking">
+      <Section title={t("reviewTracking")}>
         <Card>
-          <Text style={styles.info}>We will notify you when your verification is reviewed.</Text>
+          <Text style={styles.info}>{t("reviewTrackingInfo")}</Text>
         </Card>
       </Section>
 
-      <Button label="Back" variant="ghost" onPress={onBack} />
+      <Button label={t("back")} variant="ghost" onPress={onBack} />
     </ScrollView>
   );
 };

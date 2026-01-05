@@ -4,27 +4,30 @@ import { Card } from "../components/Card";
 import { Section } from "../components/Section";
 import { Button } from "../components/Button";
 import { LabelValue } from "../components/LabelValue";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const VerificationCenterScreen: React.FC = () => {
+  const { t } = useI18n();
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Verification</Text>
-      <Text style={styles.subtitle}>KYC status and document tracking.</Text>
+      <Text style={styles.title}>{t("verificationTitle")}</Text>
+      <Text style={styles.subtitle}>{t("verificationSubtitle")}</Text>
 
-      <Section title="KYC Status">
+      <Section title={t("kycStatusTitle")}>
         <Card>
-          <LabelValue label="Status" value="Unverified" tone="negative" />
-          <LabelValue label="Last Update" value="Today" />
-          <Button label="Start Verification" />
+          <LabelValue label={t("statusLabel")} value={t("unverified")} tone="negative" />
+          <LabelValue label={t("lastUpdate")} value={t("today")} />
+          <Button label={t("startVerification")} />
         </Card>
       </Section>
 
-      <Section title="Documents">
+      <Section title={t("documents")}>
         <Card>
-          <LabelValue label="ID Document" value="Not submitted" />
-          <LabelValue label="Proof of Address" value="Not submitted" />
-          <Button label="Upload Documents" variant="ghost" />
+          <LabelValue label={t("idDocument")} value={t("notSubmitted")} />
+          <LabelValue label={t("proofOfAddress")} value={t("notSubmitted")} />
+          <Button label={t("uploadDocumentsLabel")} variant="ghost" />
         </Card>
       </Section>
     </ScrollView>

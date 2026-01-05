@@ -3,29 +3,31 @@ import { ScrollView, StyleSheet, Text } from "react-native";
 import { Card } from "../components/Card";
 import { Section } from "../components/Section";
 import { Button } from "../components/Button";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const SupportCenterScreen: React.FC = () => {
   const [ticketCreated, setTicketCreated] = useState(false);
+  const { t } = useI18n();
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Support</Text>
-      <Text style={styles.subtitle}>Get help or contact the team.</Text>
+      <Text style={styles.title}>{t("supportCenterTitle")}</Text>
+      <Text style={styles.subtitle}>{t("supportCenterSubtitle")}</Text>
 
-      <Section title="Contact">
+      <Section title={t("contact")}>
         <Card>
-          <Text style={styles.text}>Create a support ticket or open chat.</Text>
-          <Button label="Create Ticket" onPress={() => setTicketCreated(true)} />
-          {ticketCreated ? <Text style={styles.success}>Ticket created. We will reach out soon.</Text> : null}
-          <Button label="Open Chat" variant="ghost" />
+          <Text style={styles.text}>{t("supportCenterSubtitle")}</Text>
+          <Button label={t("createTicket")} onPress={() => setTicketCreated(true)} />
+          {ticketCreated ? <Text style={styles.success}>{t("ticketCreated")}</Text> : null}
+          <Button label={t("openChat")} variant="ghost" />
         </Card>
       </Section>
 
-      <Section title="Help Center">
+      <Section title={t("helpCenter")}>
         <Card>
-          <Text style={styles.text}>Find answers to common issues and workflows.</Text>
-          <Button label="Open Help Center" variant="ghost" />
+          <Text style={styles.text}>{t("helpCenterMessage")}</Text>
+          <Button label={t("openHelpCenter")} variant="ghost" />
         </Card>
       </Section>
     </ScrollView>

@@ -6,9 +6,11 @@ import { Input } from "../components/Input";
 import { Section } from "../components/Section";
 import { Toggle } from "../components/Toggle";
 import { useAppState } from "../state/AppState";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const AccountScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const { t } = useI18n();
   const {
     accountStatus,
     setAccountStatus,
@@ -32,39 +34,41 @@ export const AccountScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Open Trading Account</Text>
-      <Text style={styles.subtitle}>Select account type, leverage, and base currency.</Text>
+      <Text style={styles.title}>{t("openTradingAccount")}</Text>
+      <Text style={styles.subtitle}>{t("openAccountSubtitle")}</Text>
 
       <Card>
-        <Text style={styles.status}>Status: {accountStatus.toUpperCase()}</Text>
-        <Toggle left="Real" right="Demo" value={isDemo} onChange={setIsDemo} />
+        <Text style={styles.status}>
+          {t("statusLabel")}: {t(accountStatus).toUpperCase()}
+        </Text>
+        <Toggle left={t("real")} right={t("demo")} value={isDemo} onChange={setIsDemo} />
       </Card>
 
-      <Section title="Account Details">
+      <Section title={t("accountDetails")}>
         <Card>
           <View style={styles.field}>
-            <Text style={styles.label}>Account Type</Text>
+            <Text style={styles.label}>{t("accountTypeLabel")}</Text>
             <Input value={accountType} onChangeText={setAccountType} placeholder="Standard" />
           </View>
           <View style={styles.field}>
-            <Text style={styles.label}>Leverage</Text>
+            <Text style={styles.label}>{t("leverage")}</Text>
             <Input value={leverage} onChangeText={setLeverage} placeholder="1:200" />
           </View>
           <View style={styles.field}>
-            <Text style={styles.label}>Base Currency</Text>
+            <Text style={styles.label}>{t("baseCurrencyLabel")}</Text>
             <Input value={baseCurrency} onChangeText={setBaseCurrency} placeholder="USD" />
           </View>
-          <Button label="Open Account" onPress={handleOpen} />
+          <Button label={t("openAccountButton")} onPress={handleOpen} />
         </Card>
       </Section>
 
-      <Section title="Account Notes">
+      <Section title={t("accountNotes")}>
         <Card>
-          <Text style={styles.note}>Account approval may take a few minutes.</Text>
+          <Text style={styles.note}>{t("accountNotesMessage")}</Text>
         </Card>
       </Section>
 
-      <Button label="Back" variant="ghost" onPress={onBack} />
+      <Button label={t("back")} variant="ghost" onPress={onBack} />
     </ScrollView>
   );
 };

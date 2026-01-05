@@ -4,29 +4,32 @@ import { Card } from "../components/Card";
 import { Section } from "../components/Section";
 import { LabelValue } from "../components/LabelValue";
 import { Button } from "../components/Button";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const AccountCenterScreen: React.FC = () => {
+  const { t } = useI18n();
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Account</Text>
-      <Text style={styles.subtitle}>Profile, tier, and account overview.</Text>
+      <Text style={styles.title}>{t("account")}</Text>
+      <Text style={styles.subtitle}>{t("accountCenterSubtitle")}</Text>
 
-      <Section title="Profile">
+      <Section title={t("profile")}>
         <Card>
-          <LabelValue label="Name" value="John Doe" />
-          <LabelValue label="FISG ID" value="FISG-20831" />
-          <LabelValue label="Tier" value="Silver" tone="positive" />
-          <Button label="Edit Profile" variant="ghost" />
+          <LabelValue label={t("nameLabel")} value="John Doe" />
+          <LabelValue label={t("fisgId")} value="FISG-20831" />
+          <LabelValue label={t("tierLabel")} value="Silver" tone="positive" />
+          <Button label={t("editProfile")} variant="ghost" />
         </Card>
       </Section>
 
-      <Section title="Account Summary">
+      <Section title={t("accountSummary")}>
         <Card>
-          <LabelValue label="Balance" value="$1,000.00" />
-          <LabelValue label="Equity" value="$1,000.00" />
-          <LabelValue label="Margin" value="$120.00" />
-          <LabelValue label="Free Margin" value="$880.00" />
+          <LabelValue label={t("balance")} value="$1,000.00" />
+          <LabelValue label={t("equity")} value="$1,000.00" />
+          <LabelValue label={t("margin")} value="$120.00" />
+          <LabelValue label={t("freeMargin")} value="$880.00" />
         </Card>
       </Section>
     </ScrollView>

@@ -95,7 +95,10 @@ const AppShell: React.FC = () => {
   return (
     <View style={styles.webOuter}>
       <SafeAreaView style={styles.shell}>
-        <AppHeader onMenu={() => setDrawerOpen(true)} />
+        <AppHeader
+          onMenu={() => setDrawerOpen(true)}
+          onNotifications={() => handleNavigate("notifications")}
+        />
         <View style={styles.content}>
           {screen === "home" ? <HomeScreen onNavigate={handleNavigate} /> : null}
           {screen === "market" ? <MarketScreen /> : null}

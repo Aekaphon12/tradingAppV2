@@ -5,16 +5,18 @@ import { Section } from "../components/Section";
 import { Chip } from "../components/Chip";
 import { colors } from "../theme/colors";
 import { useAppState } from "../state/AppState";
+import { useI18n } from "../state/I18n";
 
 export const PreferencesScreen: React.FC = () => {
   const { lang, setLang, fontScale, setFontScale } = useAppState();
+  const { t } = useI18n();
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Preferences</Text>
-      <Text style={styles.subtitle}>Language, currency, and time zone.</Text>
+      <Text style={styles.title}>{t("preferencesTitle")}</Text>
+      <Text style={styles.subtitle}>{t("preferencesSubtitle")}</Text>
 
-      <Section title="Language">
+      <Section title={t("language")}>
         <Card>
           <View style={styles.row}>
             <Chip label="EN" selected={lang === "en"} onPress={() => setLang("en")} />
@@ -24,7 +26,7 @@ export const PreferencesScreen: React.FC = () => {
         </Card>
       </Section>
 
-      <Section title="Font Size">
+      <Section title={t("fontSize")}>
         <Card>
           <View style={styles.row}>
             <Chip
@@ -37,16 +39,16 @@ export const PreferencesScreen: React.FC = () => {
               selected={false}
               onPress={() => setFontScale((prev) => Math.min(1.3, Number((prev + 0.1).toFixed(1))))}
             />
-            <Text style={styles.value}>Scale {fontScale.toFixed(1)}x</Text>
+            <Text style={styles.value}>{t("scaleLabel").replace("{scale}", fontScale.toFixed(1))}</Text>
           </View>
         </Card>
       </Section>
 
-      <Section title="Localization">
+      <Section title={t("localization")}>
         <Card>
-          <Text style={styles.label}>Currency</Text>
+          <Text style={styles.label}>{t("currency")}</Text>
           <Text style={styles.value}>USD (mock)</Text>
-          <Text style={styles.label}>Timezone</Text>
+          <Text style={styles.label}>{t("timezone")}</Text>
           <Text style={styles.value}>Asia/Bangkok (mock)</Text>
         </Card>
       </Section>

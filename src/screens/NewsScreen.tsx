@@ -4,15 +4,18 @@ import { Card } from "../components/Card";
 import { Section } from "../components/Section";
 import { Button } from "../components/Button";
 import { economicCalendar, newsFeed } from "../data/mock";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const NewsScreen: React.FC = () => {
+  const { t } = useI18n();
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>News & Calendar</Text>
-      <Text style={styles.subtitle}>Market updates and economic events.</Text>
+      <Text style={styles.title}>{t("newsCalendarTitle")}</Text>
+      <Text style={styles.subtitle}>{t("newsCalendarSubtitle")}</Text>
 
-      <Section title="Market News">
+      <Section title={t("marketNews")}>
         <Card>
           {newsFeed.map((item) => (
             <View key={item.id} style={styles.row}>
@@ -20,13 +23,13 @@ export const NewsScreen: React.FC = () => {
                 <Text style={styles.titleRow}>{item.title}</Text>
                 <Text style={styles.time}>{item.time}</Text>
               </View>
-              <Button label="Read" variant="ghost" />
+              <Button label={t("read")} variant="ghost" />
             </View>
           ))}
         </Card>
       </Section>
 
-      <Section title="Economic Calendar">
+      <Section title={t("economicCalendar")}>
         <Card>
           {economicCalendar.map((event) => (
             <View key={event.id} style={styles.row}>
@@ -35,11 +38,11 @@ export const NewsScreen: React.FC = () => {
                 <Text style={styles.time}>{event.time}</Text>
               </View>
               <Text style={[styles.impact, event.impact === "High" && styles.impactHigh]}>
-                {event.impact}
+                {event.impact === "High" ? t("highImpact") : event.impact}
               </Text>
             </View>
           ))}
-          <Text style={styles.note}>High-impact alerts placeholder (Phase 1+).</Text>
+          <Text style={styles.note}>{t("highImpactNote")}</Text>
         </Card>
       </Section>
     </ScrollView>

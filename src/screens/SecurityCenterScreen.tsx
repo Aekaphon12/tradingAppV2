@@ -4,28 +4,31 @@ import { Card } from "../components/Card";
 import { Section } from "../components/Section";
 import { Button } from "../components/Button";
 import { LabelValue } from "../components/LabelValue";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const SecurityCenterScreen: React.FC = () => {
+  const { t } = useI18n();
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Security</Text>
-      <Text style={styles.subtitle}>Protect your account access.</Text>
+      <Text style={styles.title}>{t("securityTitle")}</Text>
+      <Text style={styles.subtitle}>{t("securitySubtitle")}</Text>
 
-      <Section title="Access">
+      <Section title={t("access")}>
         <Card>
-          <LabelValue label="Password" value="••••••" />
-          <LabelValue label="2FA" value="Disabled" tone="negative" />
-          <Button label="Enable 2FA" />
-          <Button label="Change Password" variant="ghost" />
+          <LabelValue label={t("password")} value="••••••" />
+          <LabelValue label={t("twoFactor")} value={t("disabled")} tone="negative" />
+          <Button label={t("enable2fa")} />
+          <Button label={t("changePassword")} variant="ghost" />
         </Card>
       </Section>
 
-      <Section title="Device Sessions">
+      <Section title={t("deviceSessions")}>
         <Card>
-          <LabelValue label="Current Device" value="iPhone 16 Pro Max" />
-          <LabelValue label="Last Login" value="5 mins ago" />
-          <Button label="Sign out other devices" variant="ghost" />
+          <LabelValue label={t("currentDevice")} value="iPhone 16 Pro Max" />
+          <LabelValue label={t("lastLogin")} value={t("minutesAgo").replace("{count}", "5")} />
+          <Button label={t("signOutOthers")} variant="ghost" />
         </Card>
       </Section>
     </ScrollView>

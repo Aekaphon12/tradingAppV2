@@ -8,11 +8,13 @@ import { Input } from "../components/Input";
 import { Section } from "../components/Section";
 import { LabelValue } from "../components/LabelValue";
 import { useAppState } from "../state/AppState";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const TradeScreen: React.FC = () => {
   const { positions, setPositions, balance, setBalance, equity, setEquity, addNotification, setMissionsProgress } =
     useAppState();
+  const { t } = useI18n();
   const [side, setSide] = useState<"buy" | "sell">("buy");
   const [symbol, setSymbol] = useState("EURUSD");
   const [volume, setVolume] = useState("0.1");
@@ -39,8 +41,11 @@ export const TradeScreen: React.FC = () => {
     setEquity((prev) => prev - vol * 5);
     addNotification({
       id: `trade-${Date.now()}`,
-      title: "Trade Opened",
-      body: `${symbol} ${side.toUpperCase()} ${vol} lots`,
+      title: t("tradeOpenedTitle"),
+      body: t("tradeOpenedBody")
+        .replace("{symbol}", symbol)
+        .replace("{side}", side.toUpperCase())
+        .replace("{lots}", String(vol)),
       time: ""
     });
     setMissionsProgress((prev) => ({ ...prev, m4: 100 }));
@@ -55,8 +60,8 @@ export const TradeScreen: React.FC = () => {
     setEquity((prev) => prev + position.volume * 8);
     addNotification({
       id: `close-${Date.now()}`,
-      title: "Trade Closed",
-      body: `${position.symbol} closed`,
+      title: t("tradeClosedTitle"),
+      body: t("tradeClosedBody").replace("{symbol}", position.symbol),
       time: ""
     });
   };
@@ -64,49 +69,49 @@ export const TradeScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Light Trading</Text>
-      <Text style={styles.subtitle}>Market orders only (basic).</Text>
+      <Text style={styles.title}>{t("lightTrading")}</Text>
+      <Text style={styles.subtitle}>{t("lightTradingSubtitle")}</Text>
 
-      <Section title="Order Ticket">
+      <Section title={t("orderTicket")}>
         <Card>
           <View style={styles.row}>
-            <Chip label="Buy" selected={side === "buy"} onPress={() => setSide("buy")} />
-            <Chip label="Sell" selected={side === "sell"} onPress={() => setSide("sell")} />
+            <Chip label={t("buy")} selected={side === "buy"} onPress={() => setSide("buy")} />
+            <Chip label={t("sell")} selected={side === "sell"} onPress={() => setSide("sell")} />
           </View>
           <View style={styles.field}>
-            <Text style={styles.label}>Symbol</Text>
+            <Text style={styles.label}>{t("symbol")}</Text>
             <Input value={symbol} onChangeText={setSymbol} />
           </View>
           <View style={styles.field}>
-            <Text style={styles.label}>Volume (lots)</Text>
+            <Text style={styles.label}>{t("volume")}</Text>
             <Input value={volume} onChangeText={setVolume} keyboardType="numeric" />
           </View>
           <View style={styles.fieldRow}>
             <View style={styles.fieldHalf}>
-              <Text style={styles.label}>SL</Text>
+              <Text style={styles.label}>{t("sl")}</Text>
               <Input value={sl} onChangeText={setSl} keyboardType="numeric" />
             </View>
             <View style={styles.fieldHalf}>
-              <Text style={styles.label}>TP</Text>
+              <Text style={styles.label}>{t("tp")}</Text>
               <Input value={tp} onChangeText={setTp} keyboardType="numeric" />
             </View>
           </View>
-          <Button label="Place Market Order" onPress={placeOrder} />
-          <Button label="Open in MT4/MT5" variant="ghost" />
+          <Button label={t("placeMarketOrder")} onPress={placeOrder} />
+          <Button label={t("openInMt")} variant="ghost" />
         </Card>
       </Section>
 
-      <Section title="Account Summary">
+      <Section title={t("accountSummary")}>
         <Card>
-          <LabelValue label="Balance" value={`$${balance.toFixed(2)}`} />
-          <LabelValue label="Equity" value={`$${equity.toFixed(2)}`} />
+          <LabelValue label={t("balance")} value={`$${balance.toFixed(2)}`} />
+          <LabelValue label={t("equity")} value={`$${equity.toFixed(2)}`} />
         </Card>
       </Section>
 
-      <Section title="Open Positions">
+      <Section title={t("openPositions")}>
         <Card>
           {positions.length === 0 ? (
-            <Text style={styles.empty}>No open positions.</Text>
+            <Text style={styles.empty}>{t("noOpenPositions")}</Text>
           ) : (
             positions.map((pos) => (
               <View key={pos.id} style={styles.position}>
@@ -117,8 +122,10 @@ export const TradeScreen: React.FC = () => {
                   </Text>
                 </View>
                 <View>
-                <Text style={styles.meta}>P/L {pos.pl}</Text>
-                <Button label="Close" variant="ghost" onPress={() => setCloseTarget(pos.id)} />
+                <Text style={styles.meta}>
+                  {t("pl")} {pos.pl}
+                </Text>
+                <Button label={t("close")} variant="ghost" onPress={() => setCloseTarget(pos.id)} />
                 </View>
               </View>
             ))
@@ -128,10 +135,10 @@ export const TradeScreen: React.FC = () => {
       </ScrollView>
       <ConfirmDialog
         visible={closeTarget !== null}
-        title="Close Position"
-        message="Confirm closing this position?"
-        confirmLabel="Confirm"
-        cancelLabel="Cancel"
+        title={t("confirmCloseTitle")}
+        message={t("confirmCloseMessage")}
+        confirmLabel={t("confirm")}
+        cancelLabel={t("cancel")}
         onConfirm={() => {
           if (closeTarget) {
             closePosition(closeTarget);

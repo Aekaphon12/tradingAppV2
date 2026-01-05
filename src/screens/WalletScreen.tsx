@@ -8,6 +8,7 @@ import { Input } from "../components/Input";
 import { Section } from "../components/Section";
 import { Timeline } from "../components/Timeline";
 import { useAppState } from "../state/AppState";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const WalletScreen: React.FC = () => {
@@ -22,6 +23,7 @@ export const WalletScreen: React.FC = () => {
     addNotification,
     setMissionsProgress
   } = useAppState();
+  const { t } = useI18n();
   const [tab, setTab] = useState<"deposit" | "withdraw">("deposit");
   const [amount, setAmount] = useState("100");
   const [method, setMethod] = useState("Bank Transfer");
@@ -43,8 +45,8 @@ export const WalletScreen: React.FC = () => {
     ]);
     addNotification({
       id: `dep-${Date.now()}`,
-      title: "Deposit Status",
-      body: `Deposit ${depositStatus.toUpperCase()}`,
+      title: t("deposit"),
+      body: `${t("deposit")} ${t(depositStatus).toUpperCase()}`,
       time: ""
     });
     setMissionsProgress((prev) => ({ ...prev, m3: 100 }));
@@ -69,8 +71,8 @@ export const WalletScreen: React.FC = () => {
     ]);
     addNotification({
       id: `wd-${Date.now()}`,
-      title: "Withdrawal Status",
-      body: `Withdrawal ${withdrawalStatus.toUpperCase()}`,
+      title: t("withdraw"),
+      body: `${t("withdraw")} ${t(withdrawalStatus).toUpperCase()}`,
       time: ""
     });
   };
@@ -78,69 +80,73 @@ export const WalletScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Wallet</Text>
-      <Text style={styles.subtitle}>Deposit, withdraw, and track status.</Text>
+      <Text style={styles.title}>{t("wallet")}</Text>
+      <Text style={styles.subtitle}>{t("walletSubtitle")}</Text>
 
       <View style={styles.tabRow}>
-        <Chip label="Deposit" selected={tab === "deposit"} onPress={() => setTab("deposit")} />
-        <Chip label="Withdraw" selected={tab === "withdraw"} onPress={() => setTab("withdraw")} />
+        <Chip label={t("depositTab")} selected={tab === "deposit"} onPress={() => setTab("deposit")} />
+        <Chip label={t("withdrawTab")} selected={tab === "withdraw"} onPress={() => setTab("withdraw")} />
       </View>
 
       {tab === "deposit" ? (
-        <Section title="Deposit Flow">
+        <Section title={t("depositFlow")}>
           <Card>
             <View style={styles.field}>
-              <Text style={styles.label}>Amount</Text>
+              <Text style={styles.label}>{t("amount")}</Text>
               <Input value={amount} onChangeText={setAmount} keyboardType="numeric" />
             </View>
             <View style={styles.field}>
-              <Text style={styles.label}>Method</Text>
+              <Text style={styles.label}>{t("method")}</Text>
               <Input value={method} onChangeText={setMethod} />
             </View>
-            <Text style={styles.status}>Status: {depositStatus.toUpperCase()}</Text>
+            <Text style={styles.status}>
+              {t("statusLabel")}: {t(depositStatus).toUpperCase()}
+            </Text>
             {depositStatus === "rejected" ? <Text style={styles.reason}>{depositReason}</Text> : null}
-            <Button label="Confirm Deposit" onPress={() => setShowConfirm(true)} />
+            <Button label={t("confirmDeposit")} onPress={() => setShowConfirm(true)} />
           </Card>
         </Section>
       ) : (
-        <Section title="Withdrawal Flow">
+        <Section title={t("withdrawalFlow")}>
           <Card>
             <View style={styles.field}>
-              <Text style={styles.label}>Amount</Text>
+              <Text style={styles.label}>{t("amount")}</Text>
               <Input value={amount} onChangeText={setAmount} keyboardType="numeric" />
             </View>
             <View style={styles.field}>
-              <Text style={styles.label}>Destination Method</Text>
+              <Text style={styles.label}>{t("destinationMethod")}</Text>
               <Input value={method} onChangeText={setMethod} />
             </View>
-            <Text style={styles.status}>Status: {withdrawalStatus.toUpperCase()}</Text>
+            <Text style={styles.status}>
+              {t("statusLabel")}: {t(withdrawalStatus).toUpperCase()}
+            </Text>
             {withdrawalStatus === "rejected" ? <Text style={styles.reason}>{withdrawalReason}</Text> : null}
             {kycStatus !== "approved" ? (
-              <Text style={styles.blocked}>Withdrawal blocked. KYC must be Approved.</Text>
+              <Text style={styles.blocked}>{t("withdrawalBlocked")}</Text>
             ) : null}
-            <Button label="Confirm Withdraw" onPress={handleWithdraw} disabled={kycStatus !== "approved"} />
+            <Button label={t("confirmWithdraw")} onPress={handleWithdraw} disabled={kycStatus !== "approved"} />
           </Card>
         </Section>
       )}
 
-      <Section title="Transaction History">
+      <Section title={t("transactionHistory")}>
         <Card>
           <Timeline items={transactions} />
         </Card>
       </Section>
 
-      <Section title="Retry Pattern">
+      <Section title={t("retryPattern")}>
         <Card>
-          <Text style={styles.info}>If a status update fails, show retry here.</Text>
-          <Button label="Retry" variant="ghost" />
+          <Text style={styles.info}>{t("retryMessage")}</Text>
+          <Button label={t("retry")} variant="ghost" />
         </Card>
       </Section>
       <ConfirmDialog
         visible={showConfirm}
-        title="Confirm Deposit"
-        message={`Deposit ${amount} via ${method}?`}
-        confirmLabel="Confirm"
-        cancelLabel="Cancel"
+        title={t("confirmDepositTitle")}
+        message={t("confirmDepositMessage").replace("{amount}", amount).replace("{method}", method)}
+        confirmLabel={t("confirm")}
+        cancelLabel={t("cancel")}
         onConfirm={() => {
           setShowConfirm(false);
           handleDeposit();
@@ -150,10 +156,10 @@ export const WalletScreen: React.FC = () => {
       </ScrollView>
       <ConfirmDialog
         visible={showConfirm}
-        title="Confirm Deposit"
-        message={`Deposit ${amount} via ${method}?`}
-        confirmLabel="Confirm"
-        cancelLabel="Cancel"
+        title={t("confirmDepositTitle")}
+        message={t("confirmDepositMessage").replace("{amount}", amount).replace("{method}", method)}
+        confirmLabel={t("confirm")}
+        cancelLabel={t("cancel")}
         onConfirm={() => {
           setShowConfirm(false);
           handleDeposit();

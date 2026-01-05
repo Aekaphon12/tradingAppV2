@@ -6,12 +6,14 @@ import { Button } from "../components/Button";
 import { Section } from "../components/Section";
 import { marketSymbols } from "../data/mock";
 import { useAppState } from "../state/AppState";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 const categories = ["All", "Forex", "Metals", "Indices", "CFDs"] as const;
 
 export const MarketScreen: React.FC = () => {
   const { alerts, setAlerts, addNotification, setMissionsProgress } = useAppState();
+  const { t } = useI18n();
   const [selected, setSelected] = useState<(typeof categories)[number]>("All");
   const [prices, setPrices] = useState(marketSymbols);
 
@@ -48,24 +50,41 @@ export const MarketScreen: React.FC = () => {
   const triggerAlert = (symbol: string) => {
     addNotification({
       id: `alert-${Date.now()}`,
-      title: "Price Alert",
-      body: `${symbol} reached target`,
+      title: t("priceAlertTitle"),
+      body: t("priceAlertBody").replace("{symbol}", symbol),
       time: ""
     });
   };
 
+  const categoryLabel = (cat: (typeof categories)[number]) => {
+    switch (cat) {
+      case "All":
+        return t("categoryAll");
+      case "Forex":
+        return t("categoryForex");
+      case "Metals":
+        return t("categoryMetals");
+      case "Indices":
+        return t("categoryIndices");
+      case "CFDs":
+        return t("categoryCfds");
+      default:
+        return cat;
+    }
+  };
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Market</Text>
-      <Text style={styles.subtitle}>Live price board with favorites.</Text>
+      <Text style={styles.title}>{t("market")}</Text>
+      <Text style={styles.subtitle}>{t("marketSubtitle")}</Text>
 
       <View style={styles.chips}>
         {categories.map((cat) => (
-          <Chip key={cat} label={cat} selected={selected === cat} onPress={() => setSelected(cat)} />
+          <Chip key={cat} label={categoryLabel(cat)} selected={selected === cat} onPress={() => setSelected(cat)} />
         ))}
       </View>
 
-      <Section title="Price Board">
+      <Section title={t("priceBoard")}>
         <Card>
           {filtered.map((item) => (
             <View key={item.symbol} style={styles.row}>
@@ -86,24 +105,26 @@ export const MarketScreen: React.FC = () => {
                   variant="ghost"
                   onPress={() => toggleFavorite(item.symbol)}
                 />
-                <Button label="Alert" variant="ghost" onPress={() => triggerAlert(item.symbol)} />
+                <Button label={t("alert")} variant="ghost" onPress={() => triggerAlert(item.symbol)} />
               </View>
             </View>
           ))}
-          <Text style={styles.note}>Mini chart placeholder (Phase later)</Text>
+          <Text style={styles.note}>{t("miniChartPlaceholder")}</Text>
         </Card>
       </Section>
 
-      <Section title="Favorites">
+      <Section title={t("favorites")}>
         <Card>
           {alerts.length === 0 ? (
-            <Text style={styles.empty}>No favorites yet.</Text>
+            <Text style={styles.empty}>{t("favoritesEmpty")}</Text>
           ) : (
             alerts.map((alert) => (
               <View key={alert.id} style={styles.alertRow}>
                 <Text style={styles.symbol}>{alert.symbol}</Text>
-                <Text style={styles.category}>Target {alert.target}</Text>
-                <Button label={alert.enabled ? "Enabled" : "Disabled"} variant="ghost" />
+                <Text style={styles.category}>
+                  {t("target")} {alert.target}
+                </Text>
+                <Button label={alert.enabled ? t("enabled") : t("disabled")} variant="ghost" />
               </View>
             ))
           )}

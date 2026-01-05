@@ -3,19 +3,21 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Card } from "../components/Card";
 import { Button } from "../components/Button";
 import { useAppState } from "../state/AppState";
+import { useI18n } from "../state/I18n";
 import { colors } from "../theme/colors";
 
 export const NotificationsScreen: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const { notifications } = useAppState();
+  const { t } = useI18n();
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Notifications</Text>
-      <Text style={styles.subtitle}>Deposit status, price alerts, critical events.</Text>
+      <Text style={styles.title}>{t("notifications")}</Text>
+      <Text style={styles.subtitle}>{t("notificationsSubtitle")}</Text>
 
       <Card>
         {notifications.length === 0 ? (
-          <Text style={styles.empty}>No notifications yet.</Text>
+          <Text style={styles.empty}>{t("noNotificationsYet")}</Text>
         ) : (
           notifications.map((note) => (
             <View key={note.id} style={styles.row}>
@@ -29,7 +31,7 @@ export const NotificationsScreen: React.FC<{ onBack: () => void }> = ({ onBack }
         )}
       </Card>
 
-      <Button label="Back" variant="ghost" onPress={onBack} />
+      <Button label={t("back")} variant="ghost" onPress={onBack} />
     </ScrollView>
   );
 };
